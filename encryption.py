@@ -2,7 +2,7 @@ import base64
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto import Random
-
+# Code Source : https://stackoverflow.com/questions/42568262/how-to-encrypt-text-with-a-password-in-python
 
 def encrypt(key, source, encode=True):
     key = SHA256.new(key).digest()  # use SHA-256 over our key to get a proper-sized AES key

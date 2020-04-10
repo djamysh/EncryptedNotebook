@@ -2,13 +2,17 @@ from PyQt5.QtWidgets import QWidget,QLineEdit,QPlainTextEdit,QHBoxLayout,QVBoxLa
 from PyQt5.QtCore import Qt,QTimer
 from passlib.hash import sha256_crypt
 from encryption import encrypt
+import pickle 
 
 class passwordClass(QWidget):
     def __init__(self,data):
         super(passwordClass,self).__init__()
         self.data = data
+        self.resulation = pickle.load(open("resulationInfo.pkl","rb"))
+        self.setGeometry(self.resulation[0]//2-200,self.resulation[1]//2-200,350,50)
         self.initUI()
     def initUI(self):
+        self.setWindowTitle("New Password")
         self.horizontalLay = QHBoxLayout()
         self.passwordLE = QLineEdit()
         #self.passwordLE.setEchoMode(True)
@@ -31,6 +35,9 @@ class passwordClass(QWidget):
         with open("encrypted.txt","w") as file:
             file.write(encrypted)
 
-        self.message = QLabel("Congrulations!")
+        self.message = QLabel("Your Text File Successfully Encrypted !")
+        self.message.setStyleSheet("margin:10px;padding:10ğx;background-color:grey;color:white;")
+        self.message.setWindowTitle("Message!")
+        self.message.setGeometry(self.resulation[0]//2-125,self.resulation[1]//2-25,250,50)
         self.message.show()
         self.close()

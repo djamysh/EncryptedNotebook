@@ -3,11 +3,16 @@ from PyQt5.QtCore import Qt,QTimer
 from passwordWidget import passwordClass
 from passlib.hash import sha256_crypt
 from encryption import decrypt
+import pickle 
 
 class GUI(QWidget):
     def __init__(self,password):
         super(GUI,self).__init__()
         self.password = password
+        self.setWindowTitle("Encrypted Notebook")
+        self.resulation = pickle.load(open("resulationInfo.pkl","rb"))
+        self.setGeometry(self.resulation[0]//2-510,self.resulation[1]//2-250,1020,500)
+
         self.initUI()
 
     def initUI(self):

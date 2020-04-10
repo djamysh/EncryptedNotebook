@@ -1,10 +1,15 @@
 from PyQt5.QtWidgets import QWidget,QLineEdit,QHBoxLayout,QApplication,QPushButton
 from passlib.hash import sha256_crypt
 from main import GUI
+import pickle 
+
 
 class passwordEnter(QWidget):
     def __init__(self):
         super(passwordEnter,self).__init__()
+        self.resulation = pickle.load(open("resulationInfo.pkl","rb"))
+        self.setWindowTitle("Password")
+        self.setGeometry(self.resulation[0]//2-200,self.resulation[1]//2-200,350,50)
         self.readHash()
         self.initUI()
     def initUI(self):

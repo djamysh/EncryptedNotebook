@@ -1,48 +1,59 @@
-from PyQt5.QtWidgets import QWidget,QLineEdit,QHBoxLayout,QApplication,QPushButton
-from passlib.hash import sha256_crypt
-from main import GUI
-import pickle 
+from entrance import passwordEnter
+from PyQt5.QtWidgets import QWidget,QLineEdit,QVBoxLayout,QApplication,QPushButton,QLabel,QFileDialog
+from functions import loadSystemInfo
 
-
-class passwordEnter(QWidget):
+class optionPage(QWidget):
     def __init__(self):
-        super(passwordEnter,self).__init__()
-        self.resulation = pickle.load(open("resulationInfo.pkl","rb"))
+        super(optionPage,self).__init__()
+
+        self.systemInfo = loadSystemInfo()
+        self.resulation = (self.systemInfo["width"],self.systemInfo["height"])
+        
         self.setWindowTitle("Password")
-        self.setGeometry(self.resulation[0]//2-200,self.resulation[1]//2-200,350,50)
-        self.readHash()
+        self.setGeometry(self.resulation[0]//2-200,self.resulation[1]//2-200,350,75)
         self.initUI()
+    
     def initUI(self):
-        self.horizontalLay = QHBoxLayout()
-        self.passwordLE = QLineEdit()
-        #self.passwordLE.setEchoMode(True)
+        self.verticalLay = QVBoxLayout()
+        self.label = QLabel("Options")
 
-        self.button = QPushButton("OK")
-        self.button.clicked.connect(self.checkPassword)
-        self.horizontalLay.addWidget(self.passwordLE)
-        self.horizontalLay.addWidget(self.button)
-        self.setLayout(self.horizontalLay)
+        self.newFile = QPushButton("[*]New Empty File")
+        self.newFile.clicked.connect(self.newFileFunction)
 
-    def checkPassword(self):
-        enteredPassword = self.passwordLE.text()
+        self.loadNew = QPushButton("[*]Load A New File")
+        self.loadNew.clicked.connect(self.loadNewFunction)
 
+        self.enterNormal = QPushButton("[*]Open Loaded File")
+        self.enterNormal.clicked.connect(self.enterNormalFunction)
+        
 
-        if sha256_crypt.verify(enteredPassword,self.hashed):
-            enteredPassword = enteredPassword.encode("utf-8")
-            self.gui = GUI(enteredPassword)
-            self.gui.show()
-            self.close()
+        self.verticalLay.addWidget(self.label)
+        self.verticalLay.addWidget(self.newFile)
+        self.verticalLay.addWidget(self.loadNew)
+        self.verticalLay.addWidget(self.enterNormal)
+        self.setLayout(self.verticalLay)
 
-        else:
-            print("Wrong")
+    def enterNormalFunction(self):
+    	self.pop = passwordEnter(option = 1)
+    	self.pop.show()
+    	self.close()
 
-    def readHash(self):
-        with open("hashed.txt","r") as file:
-            self.hashed = file.read()
+    def newFileFunction(self):
+    	self.pop = passwordEnter(option = 2)
+    	self.pop.show()
+    	self.close()    	
+
+    def loadNewFunction(self):
+        fileName = QFileDialog.getOpenFileName(self, 'OpenFile')
+        path = fileName[0]# Not checked is it text or not
+        self.pop = passwordEnter(option = 3,pathForNewOne = path)
+        self.pop.show()
+        self.close()
+    	
 
 if __name__ == "__main__":
     import sys
     app = QApplication(sys.argv)
-    window = passwordEnter()
+    window = optionPage()
     window.show()
-    app.exec()      
+    app.exec()          	

@@ -4,13 +4,19 @@ from passwordWidget import passwordClass
 from passlib.hash import sha256_crypt
 from encryption import decrypt
 import pickle 
+from functions import LoadText,loadSystemInfo
 
 class GUI(QWidget):
-    def __init__(self,password):
+    def __init__(self,tag,password):
         super(GUI,self).__init__()
         self.password = password
+        self.tag = tag
+
         self.setWindowTitle("Encrypted Notebook")
-        self.resulation = pickle.load(open("resulationInfo.pkl","rb"))
+        
+        self.systemInfo = loadSystemInfo()
+        self.resulation = (self.systemInfo["width"],self.systemInfo["height"])
+        
         self.setGeometry(self.resulation[0]//2-510,self.resulation[1]//2-250,1020,500)
 
         self.initUI()
@@ -28,17 +34,15 @@ class GUI(QWidget):
         self.setLayout(self.verticalLayout)
 
     def load(self):
-        with open("encrypted.txt","r") as file:
-            data = file.read()
-            decrypted = decrypt(self.password,data)
-
-            decrypted = decrypted.decode("utf-8")
+        decrypted = LoadText(self.tag,self.password)
+        
 
         self.editor.setPlainText(decrypted)
 
+
     def saveFunction(self):
         text = self.editor.toPlainText()
-        self.passwordPop = passwordClass(text)
+        self.passwordPop = passwordClass(self.tag,text)
         self.passwordPop.show()
         self.close()
 

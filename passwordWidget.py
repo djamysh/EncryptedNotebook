@@ -4,15 +4,23 @@ from passlib.hash import sha256_crypt
 from encryption import encrypt
 import pickle 
 
+from functions import HandleFile,encrypting,loadSystemInfo
+
+
 class passwordClass(QWidget):
-    def __init__(self,data):
+    def __init__(self,tag,data):
         super(passwordClass,self).__init__()
         self.data = data
-        self.resulation = pickle.load(open("resulationInfo.pkl","rb"))
+        self.tag = tag
+        
+        self.systemInfo = loadSystemInfo()
+        self.resulation = (self.systemInfo["width"],self.systemInfo["height"])
+        
         self.setGeometry(self.resulation[0]//2-200,self.resulation[1]//2-200,350,50)
         self.initUI()
+
     def initUI(self):
-        self.setWindowTitle("New Password")
+        self.setWindowTitle("{}".format(self.tag))
         self.horizontalLay = QHBoxLayout()
         self.passwordLE = QLineEdit()
         #self.passwordLE.setEchoMode(True)
@@ -25,16 +33,11 @@ class passwordClass(QWidget):
 
     def savePassword(self):
         self.password = self.passwordLE.text()
-        self.hashed = sha256_crypt.hash(self.password)
-        with open("hashed.txt","w") as file:
-            file.write(self.hashed)
+        self.password = self.password
+        self.data = self.data
+        HandleFile(self.tag,self.data,self.password,dataType = "string")
 
-        self.password = self.password.encode("utf-8")
-        self.data = self.data.encode("utf-8")
-        encrypted = encrypt(self.password,self.data)
-        with open("encrypted.txt","w") as file:
-            file.write(encrypted)
-
+        
         self.message = QLabel("Your Text File Successfully Encrypted !")
         self.message.setStyleSheet("margin:10px;padding:10ğx;background-color:grey;color:white;")
         self.message.setWindowTitle("Message!")

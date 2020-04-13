@@ -1,31 +1,36 @@
-from encryption import encrypt
 
-from passlib.hash import sha256_crypt
 
-import screeninfo
-import pickle
+import screeninfo,os,pickle
+from functions import HandleFile,get_path
 
-def setup(filePath,password):
-	with open(filePath,"r") as file:
-		data = file.read()
-	
-	data = data.encode("utf-8")
-	password = password.encode("utf-8")
-	hashed = sha256_crypt.hash(password)
-	encrypted = encrypt(password,data)
-	with open("encrypted.txt","w") as file:
-		file.write(encrypted)
-	
-	with open("hashed.txt","w") as file:
-		file.write(hashed)
-		
+
+def get_resulation():
+	resulationInfo = screeninfo.get_monitors()[0]# Assuming the first monitor.			
+	return resulationInfo
+
+def systemSetup():
+	path = get_path()
+	resulation = get_resulation()
+	Info = {"path":path,"width":resulation.width,"height":resulation.height}
+	if not os.path.isdir(path+"Data/"):
+		os.mkdir(path+"Data/")
+
+	pickle.dump(Info,open(path+"Data/sysInfo.pkl","wb"))
+	print("Setup completed.")
+
+
 if __name__ == "__main__":
-	resulationInfo = screeninfo.get_monitors()[0]# 0'th index, because I assume the first monitor.
-	resulation = (resulationInfo.width,resulationInfo.height)
+	systemSetup()
+	HandleFile("test","/home/brad/testfile.txt","123456789")
+
+
+
+	"""
+
 	pickle.dump(resulation,open("resulationInfo.pkl","wb"))
 
 	filePath = input("File Path : ")
 	password = input("Password : ")
 	setup(filePath,password)
 	print("Setup Finished !")
-	
+	"""

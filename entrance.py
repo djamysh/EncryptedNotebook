@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QWidget,QLineEdit,QVBoxLayout,QApplication,QPushButton,QLabel
+from PyQt5.QtWidgets import QWidget,QLineEdit,QVBoxLayout,QApplication,QPushButton,QLabel,QRadioButton,QHBoxLayout,QGridLayout
+from PyQt5.QtCore import QTimer,Qt
 from passlib.hash import sha256_crypt
 from main import GUI
 import pickle 
@@ -14,22 +15,63 @@ class passwordEnter(QWidget):
 
         self.option = option
         self.setWindowTitle("Password")
-        self.setGeometry(self.resulation[0]//2-200,self.resulation[1]//2-200,350,50)
+        self.setGeometry(self.resulation[0]//2-250,self.resulation[1]//2-75,500,150)
         self.initUI()
     
     def initUI(self):
         self.verticalLay = QVBoxLayout()
+
+        self.GridLayout = QGridLayout()
+
+        self.labelTag = QLabel("Tag : ")
+
         self.tagLE = QLineEdit()
+        self.tagLE.setFixedWidth(250)
+
+
+        self.readableTag = QRadioButton()
+
+
+        self.labelPassword = QLabel("Password : ")
+
         self.passwordLE = QLineEdit()
-        #self.passwordLE.setEchoMode(True)
+        self.passwordLE.setFixedWidth(250)
+        
+        self.readablePassword = QRadioButton()
 
         self.button = QPushButton("OK")
 
+        self.timer = QTimer() #For password
+        self.timer.timeout.connect(self._update)
+        self.timer.start(1000)
+
         self.button.clicked.connect(self.Progress)
-        self.verticalLay.addWidget(self.tagLE)
-        self.verticalLay.addWidget(self.passwordLE)
-        self.verticalLay.addWidget(self.button)
+
+        self.GridLayout.addWidget(self.labelTag,0,0,alignment = Qt.AlignVCenter|Qt.AlignRight)
+        self.GridLayout.addWidget(self.tagLE,0,1,alignment = Qt.AlignVCenter| Qt.AlignHCenter)
+        self.GridLayout.addWidget(self.readableTag,0,2,alignment = Qt.AlignVCenter|Qt.AlignLeft)
+
+        self.GridLayout.addWidget(self.labelPassword,1,0,alignment = Qt.AlignVCenter|Qt.AlignRight)
+        self.GridLayout.addWidget(self.passwordLE,1,1,alignment = Qt.AlignVCenter| Qt.AlignHCenter)
+        self.GridLayout.addWidget(self.readablePassword,1,2,alignment = Qt.AlignVCenter|Qt.AlignLeft)
+
+        self.GridLayout.setAlignment(Qt.AlignVCenter| Qt.AlignHCenter)
+        self.verticalLay.addLayout(self.GridLayout)
+        self.verticalLay.addWidget(self.button,alignment = Qt.AlignVCenter| Qt.AlignHCenter)
+        self.verticalLay.setAlignment(Qt.AlignVCenter| Qt.AlignHCenter)
         self.setLayout(self.verticalLay)
+
+    def _update(self):
+        if self.readablePassword.isChecked():
+            self.passwordLE.setEchoMode(False)
+        else:
+            self.passwordLE.setEchoMode(QLineEdit.Password)
+
+        if self.readableTag.isChecked():
+            self.tagLE.setEchoMode(False)
+        else:
+            self.tagLE.setEchoMode(QLineEdit.Password)
+
 
     def Progress(self):
         enteredTag = self.tagLE.text()

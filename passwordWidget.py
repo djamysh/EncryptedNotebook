@@ -16,7 +16,7 @@ class passwordClass(QWidget):
         self.systemInfo = loadSystemInfo()
         self.resulation = (self.systemInfo["width"],self.systemInfo["height"])
         
-        self.setGeometry(self.resulation[0]//2-200,self.resulation[1]//2-200,350,50)
+        self.setGeometry(self.resulation[0]//2-250,self.resulation[1]//2-75,500,150)
         self.initUI()
 
     def initUI(self):

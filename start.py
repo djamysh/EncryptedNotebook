@@ -12,7 +12,7 @@ class optionPage(QWidget):
         self.resulation = (self.systemInfo["width"],self.systemInfo["height"])
         self.setStyleSheet("background-color:#221515;")
         self.setWindowTitle("Encrypted Notebook")
-        self.setGeometry(self.resulation[0]//2-200,self.resulation[1]//2-200,350,75)
+        self.setGeometry(self.resulation[0]//2-175,self.resulation[1]//2-38,350,76)
         self.initUI()
     
     def initUI(self):

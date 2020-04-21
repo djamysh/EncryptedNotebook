@@ -6,7 +6,7 @@ def get_path():
     encoding = sys.getfilesystemencoding()
     if hasattr(sys, "frozen"):# Checks is it exe.Frozen script.
         return os.path.realpath(sys.executable)
-    return "/".join(os.path.realpath(__file__).split("/")[:-1])+"/"
+    return os.sep.join(os.path.realpath(__file__).split(os.sep)[:-1])+os.sep
 
 def encrypting(data,password,dataType = "path"):# dataType:"path","string"
 	if dataType == "path":
@@ -26,7 +26,7 @@ def encrypting(data,password,dataType = "path"):# dataType:"path","string"
 
 def getEncryptedData(tag):
 	file_name = tagB64(tag,direction="encode")
-	path = loadSystemInfo()["path"] + "Data/Operands/{}.pkl".format(file_name)
+	path = loadSystemInfo()["path"] + "Data{}Operands{}{}.pkl".format(os.sep,os.sep,file_name)
 	try:
 		encrypted_data = pickle.load(open(path,"rb"))
 		return encrypted_data
@@ -37,7 +37,7 @@ def getEncryptedData(tag):
 
 def loadSystemInfo():
 	path = get_path()
-	data = pickle.load(open(path+"Data/sysInfo.pkl","rb"))
+	data = pickle.load(open(path+"Data{}sysInfo.pkl".format(os.sep),"rb"))
 	return data
 
 def tagB64(tag,direction ="encode"):
@@ -51,18 +51,19 @@ def tagB64(tag,direction ="encode"):
 	return b64tag
 
 def HandleFile(tag,data,password,dataType = "path",createNew = False):# datatype : path or string
-	path = loadSystemInfo()["path"] + "Data/"
-	if not os.path.isdir(path+"Operands/"):
-		os.mkdir(path+"Operands/")
+	path = loadSystemInfo()["path"] + "Data{}".format(os.sep)
+	if not os.path.isdir(path+"Operands{}".format(os.sep)):
+		os.mkdir(path+"Operands{}".format(os.sep))
 
 	if createNew:
 		data = path+"blank.txt"
+		open(data,"w")
 
 	hashed,encrypted = encrypting(data,password,dataType = dataType)
 	tagb64 = tagB64(tag,direction = "encode")
 	encrypted_data = {"hashed":hashed,"encrypted":encrypted}
 
-	pickle.dump(encrypted_data,open(path+"Operands/{}.pkl".format(tagb64),"wb"))
+	pickle.dump(encrypted_data,open(path+"Operands{}{}.pkl".format(os.sep,tagb64),"wb"))
 
 
 def checkData(tag,password):

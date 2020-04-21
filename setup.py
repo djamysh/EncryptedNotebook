@@ -12,25 +12,12 @@ def systemSetup():
 	path = get_path()
 	resulation = get_resulation()
 	Info = {"path":path,"width":resulation.width,"height":resulation.height}
-	if not os.path.isdir(path+"Data/"):
-		os.mkdir(path+"Data/")
+	if not os.path.isdir(path+"Data{}".format(os.sep)):
+		os.mkdir(path+"Data{}".format(os.sep))
 
-	pickle.dump(Info,open(path+"Data/sysInfo.pkl","wb"))
+	pickle.dump(Info,open(path+"Data{}sysInfo.pkl".format(os.sep),"wb"))
 	print("Setup completed.")
 
 
 if __name__ == "__main__":
 	systemSetup()
-	HandleFile("test","/home/brad/testfile.txt","123456789")
-
-
-
-	"""
-
-	pickle.dump(resulation,open("resulationInfo.pkl","wb"))
-
-	filePath = input("File Path : ")
-	password = input("Password : ")
-	setup(filePath,password)
-	print("Setup Finished !")
-	"""

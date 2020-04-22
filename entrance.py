@@ -14,7 +14,7 @@ class passwordEnter(QWidget):
         self.pathForNewOne = pathForNewOne# If it is no 'none', obviously option is 3 . 
         self.setStyleSheet("background-color : #352925;")
         self.option = option
-        self.setWindowTitle("Password")
+        self.setWindowTitle("Encrypted Notebook")
         self.setGeometry(self.resulation[0]//2-250,self.resulation[1]//2-75,500,150)
         self.initUI()
     

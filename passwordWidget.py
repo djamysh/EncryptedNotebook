@@ -39,7 +39,7 @@ class passwordClass(QWidget):
 
         
         self.message = QLabel("Your Text File Successfully Encrypted !")
-        self.message.setStyleSheet("margin:10px;padding:10ğx;background-color:grey;color:white;")
+        self.message.setStyleSheet("margin:10px;padding:10px;background-color:grey;color:white;")
         self.message.setWindowTitle("Message!")
         self.message.setGeometry(self.resulation[0]//2-125,self.resulation[1]//2-25,250,50)
         self.message.show()

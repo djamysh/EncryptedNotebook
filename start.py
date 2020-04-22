@@ -17,25 +17,26 @@ class optionPage(QWidget):
     
     def initUI(self):
         self.verticalLay = QVBoxLayout()
+        self.setMouseTracking(True)
 
         self.label = QLabel("Options")
         self.label.setStyleSheet("background-color:#bab5ae;font-family:'NewRocker';font-size:32px;font-weight:bold;color:  #3c1515;width:160px;height:30px;border-radius:3px;")
         self.label.setFixedHeight(64)
         self.label.setFixedWidth(240)
 
-        self.newFile = QPushButton("New Empty File")
+        self.newFile = HoverButton("New Empty File")
         self.newFile.setFixedHeight(32)
         self.newFile.setFixedWidth(160)
         self.newFile.setStyleSheet("background-color: #bab5ae;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;")
         self.newFile.clicked.connect(self.newFileFunction)
 
-        self.loadNew = QPushButton("Load A New File")
+        self.loadNew = HoverButton("Load A New File")
         self.loadNew.setFixedHeight(32)
         self.loadNew.setFixedWidth(160)
         self.loadNew.setStyleSheet("background-color: #bab5ae;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;")
         self.loadNew.clicked.connect(self.loadNewFunction)
 
-        self.enterNormal = QPushButton("Open Loaded File")
+        self.enterNormal = HoverButton("Open Loaded File")
         self.enterNormal.setFixedHeight(32)
         self.enterNormal.setFixedWidth(160)
         self.enterNormal.setStyleSheet("background-color: #bab5ae;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;")
@@ -67,6 +68,18 @@ class optionPage(QWidget):
         self.pop.show()
         self.close()
     	
+class HoverButton(QPushButton):
+
+    def __init__(self,text, parent=None):
+        super(HoverButton, self).__init__(parent)
+        self.setText(text)
+
+    def enterEvent(self,event):
+        self.setStyleSheet("background-color: #c7c3be;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;")
+
+    def leaveEvent(self,event):
+        self.setStyleSheet("background-color: #bab5ae;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;")
+
 
 if __name__ == "__main__":
     import sys,os

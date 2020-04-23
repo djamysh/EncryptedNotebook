@@ -5,6 +5,8 @@ from passlib.hash import sha256_crypt
 from encryption import decrypt
 import pickle 
 from functions import LoadText,loadSystemInfo
+from specialWidgets import HoverButton
+
 
 class GUI(QWidget):
     def __init__(self,tag,password):
@@ -32,9 +34,7 @@ class GUI(QWidget):
         self.editor.setFixedHeight(450)
         self.editor.setFixedWidth(960)
 
-        self.saveButton = HoverButton("Save")
-        self.saveButton.setStyleSheet("background-color: #bab5ae;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;")
-
+        self.saveButton = HoverButton("Save","background-color: #c7c3be;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;","background-color: #bab5ae;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;")
 
 
         self.verticalLayout.setAlignment(Qt.AlignVCenter| Qt.AlignHCenter)
@@ -70,17 +70,3 @@ class GUI(QWidget):
         elif (event.modifiers() & Qt.ControlModifier):
             if event.key() == Qt.Key_S: #Control Save
                 self.saveFunction()
-
-class HoverButton(QPushButton):
-
-    def __init__(self,text, parent=None):
-        super(HoverButton, self).__init__(parent)
-        self.setText(text)
-
-    def enterEvent(self,event):
-        self.setStyleSheet("background-color: #c7c3be;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;")
-
-    def leaveEvent(self,event):
-        self.setStyleSheet("background-color: #bab5ae;font-family:'NewRocker';font-size:16px;font-weight:bold;color:#4E4343;width:160px;height:30px;border-radius:3px;")
-
-

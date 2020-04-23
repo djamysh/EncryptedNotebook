@@ -5,6 +5,7 @@ from main import GUI
 import pickle 
 from functions import checkData,loadSystemInfo,HandleFile
 
+from specialWidgets import HoverButton,HoverEchoLineEdit
 
 class passwordEnter(QWidget):
     def __init__(self,option = 1,pathForNewOne = None):# option : 1-> open a loaded file , 2-> new file , 3-> load new file
@@ -44,12 +45,9 @@ class passwordEnter(QWidget):
         self.passwordLE.setFixedWidth(250)
         
 
-        self.button = HoverButton("OK")
+        self.button = HoverButton("OK","border-radius:3px;background-color:#a2b2b8;color:#0d1416;font-size:16px;font-family:'NewRocker';font-weight:750;","border-radius:3px;background-color:#0d1416;color:#a2b2b8;font-size:16px;font-family:'NewRocker';font-weight:750;")
         self.button.setFixedHeight(40)
         self.button.setFixedWidth(120)
-
-        self.button.setStyleSheet("border-radius:3px;background-color:#0d1416;color:#a2b2b8;font-size:16px;font-family:'NewRocker';font-weight:750;")
-
         self.button.clicked.connect(self.Progress)
 
         self.GridLayout.addWidget(self.labelTag,0,0,alignment = Qt.AlignVCenter|Qt.AlignRight)
@@ -93,26 +91,3 @@ class passwordEnter(QWidget):
                         
         else:
             pass
-
-class HoverEchoLineEdit(QLineEdit):
-    def __init__(self,parent = None):
-        super(HoverEchoLineEdit,self).__init__(parent)
-
-    def enterEvent(self,event):
-        self.setEchoMode(False)
-
-    def leaveEvent(self,event):
-        self.setEchoMode(QLineEdit.Password)
-
-class HoverButton(QPushButton):
-
-    def __init__(self,text, parent=None):
-        super(HoverButton, self).__init__(parent)
-        self.setText(text)
-
-    def enterEvent(self,event):
-        self.setStyleSheet("border-radius:3px;background-color:#a2b2b8;color:#0d1416;font-size:16px;font-family:'NewRocker';font-weight:750;")
-
-    def leaveEvent(self,event):
-        self.setStyleSheet("border-radius:3px;background-color:#0d1416;color:#a2b2b8;font-size:16px;font-family:'NewRocker';font-weight:750;")
-
